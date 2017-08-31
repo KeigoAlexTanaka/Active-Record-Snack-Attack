@@ -14,3 +14,6 @@ Snack.create!(name: 'Microwave Pizza', calories: 400)
 Snack.create!(name: 'M&Ms', calories: 300)
 Snack.create!(name: 'Skittles', calories: 300)
 Snack.create!(name: 'Snickers', calories: 300)
+
+
+Brand.create!(name: 'Mars', )
