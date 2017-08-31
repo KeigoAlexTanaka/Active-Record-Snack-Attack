@@ -35,8 +35,94 @@
 
   puts "created #{Snack.count} snacks!"
   ```
+* `rake db:seed` will run this file!  Now we have stuff in our database!
+* Open up a new *tab* in your terminal.  Run `rails c` (short for `rails console`)
+* Let's see what we got in there!  Try running all these commands and see what you get.  Look at the SQL that is being executed for *you*
+  * `Snack.count`
+  * `Snack.first`
+  * `Snack.find_by(name: 'M&Ms')`
+  * `Snack.where(calories: 300)`
+  * `Snack.where(calories: (200..500))`
+  * `Snack.where.not(calories: (200..500))`
+* SOOO COOOLLL
+* Now let's try to update some records.
+  * Assume we mis-entered the number of calories for M&Ms
+  * `snack = Snack.find_by(name: 'M&Ms')`
+  * `snack.update!(calories: 200)`
 
-# Things to know
+### Adding more stuff
+
+Looks like a log of these snacks have some Brands in common.  Lets create a `brands` table!
+
+* `rails g model Brand`
+* Open up the newest migration in in the `db/migrate` directory.
+* Add a `name` and `logo` column
+```ruby
+  def change
+    create_table :brands do |t|
+      t.string :name
+      t.integer :logo
+
+      t.timestamps
+    end
+  end
+```
+* `rake db:migrate`
+
+Now let's add some Brands.  Normally we wouldn't keep editing the seeds file but since we are just playing around this is ok.
+
+First let's start with a clean slate and destroy every `Snack`.  In the console run `Snack.destroy_all`.  We are safe doing this today because we are just playing around with our seed data.  In general this is *not* a safe action.
+
+Now let's make some brands!
+
+## Relations
+
+A single brand can have many snacks. Would you agree?  Wouldn't it be nice to link a snack to its brand?
+
+`rails g migration AddBrandIdToSnacks`
+
+Now in the last migration:
+
+```ruby
+  def change
+    add_column :snacks, :brand_id, :integer
+    add_index :snacks, :brand_id
+  end
+```
+
+### `has_many` and `belongs_to`
+
+Now to actually link these models together we just need two easy things.
+
+`app/models/brand`
+```ruby
+  class Brand < ApplicationRecord
+    has_many :snacks
+  end
+```
+
+`app/models/snack`
+```ruby
+  class Snack < ApplicationRecord
+    belongs_to :brand
+  end
+```
+
+Now let's update our seeds file so the relations exist.  We will add a `brand_id` to each snack.
+
+Again since we are are just playing around, we can drop all the snacks so we can run `Snack.destroy_all` and then `Branding.destroy_all` in the console.
+
+Now let's run our migration seeds again: `rails db:seed`
+
+And let's hop back in the console:
+
+```ruby
+reload! # reload all the new code
+snack = Snack.find_by(name: 'M&Ms')
+snack.brand # => the mars model! magic! no SQL needed! how cool!?
+```
+
+## Things to know
 
 * We will have class for every table in our database.  Each class inherits from `ActiveRecord::Base`.  To create a new instance we simply do `Snack.new`, for example.  It takes one argument: a hash of column names and values.
   * `snack = Snack.new(name: 'M&Ms', calories: 300)`
