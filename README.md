@@ -118,8 +118,13 @@ And let's hop back in the console:
 
 ```ruby
 reload! # reload all the new code
+
 snack = Snack.find_by(name: 'M&Ms')
-snack.brand # => the mars model! magic! no SQL needed! how cool!?
+snack.brand
+# => the mars model! magic! no SQL needed! how cool!?
+
+brand = Brand.find_by(name: 'Mars')
+brand.snacks # => look at all these snacks! so coooll!!
 ```
 
 ## Things to know
