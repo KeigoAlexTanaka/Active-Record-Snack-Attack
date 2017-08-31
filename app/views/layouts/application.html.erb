@@ -9,6 +9,24 @@
   </head>
 
   <body>
+
+    <center><b><i><u> <!-- fun html tags !! bring back the 90s!! -->
+      Snack Attack!
+    </u></i></b></center>
+
     <%= yield %>
+
+    <hr>
+
+    <div class="index-links">
+      <%= link_to "Consumers", consumers_path %>
+      |
+      <%= link_to "Brands", brands_path %>
+      |
+      <%= link_to "Snacks", snacks_path %>
+    </div>
+
   </body>
+
+
 </html>

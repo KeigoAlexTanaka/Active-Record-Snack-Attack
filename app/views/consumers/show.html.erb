@@ -1,0 +1,13 @@
+<h3><%= @consumer.name %></h3>
+
+<div class="consumer-info">
+
+  <%= @consumer.name %> is <%= @consumer.age %> years old
+
+</div>
+
+<br>
+
+<%= link_to "#{@consumer.name}'s snacks", consumer_snacks_path(@consumer) %>
+|
+<%= link_to "Consumers", consumers_path %>

@@ -1,0 +1,9 @@
+<h3><%= @brand.name %></h3>
+
+<%= image_tag @brand.logo %>
+
+<br>
+
+<%= link_to "#{@brand.name}'s snacks", brand_snacks_path(@brand) %>
+|
+<%= link_to "Consumers", consumers_path %>
