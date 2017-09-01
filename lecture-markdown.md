@@ -30,8 +30,18 @@ We can just write this:
 Snack.all()
 ```
 
-Pretty cool, right?
+Pretty cool, right? (The _really_ cool shit is yet to come.)
 
 # Building a Snack Attack app!!!!
 
+### Creating an app and a database
 
+Let's start by creating a new Rails app:
+
+`rails new SnackAttack --database=postgresql -G`
+
+We're telling Rails to create a new SnackAttack app with a postgres database, and not to initiate a git repository immediately. 
+
+You should add and commit everything at this point.
+
+Then, create the database by running `rails db:create`. Rails knows what your database should be named 
