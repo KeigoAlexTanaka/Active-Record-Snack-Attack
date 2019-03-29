@@ -111,7 +111,7 @@ Now to actually link these models together we just need two easy things.
 
 Now let's update our seeds file so the relations exist.  We will add a `brand_id` to each snack. Run migrations and seeds.
 
-Again since we are are just playing around, we can drop all the snacks so we can run `Snack.destroy_all` and then `Branding.destroy_all` in the console.
+Again since we are are just playing around, we can drop all the snacks so we can run `Snack.destroy_all` and then `Brand.destroy_all` in the console.
 
 Now let's run our migration seeds again: `rails db:seed`
 
