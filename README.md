@@ -109,7 +109,7 @@ Now to actually link these models together we just need two easy things.
   end
 ```
 
-Now let's update our seeds file so the relations exist.  We will add a `brand_id` to each snack.
+Now let's update our seeds file so the relations exist.  We will add a `brand_id` to each snack. Run migrations and seeds.
 
 Again since we are are just playing around, we can drop all the snacks so we can run `Snack.destroy_all` and then `Branding.destroy_all` in the console.
 
