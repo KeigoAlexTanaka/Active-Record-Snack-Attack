@@ -23,6 +23,7 @@
   ```
 * `rails db:migrate`
 * you may need to create your database by running `rails db:create`
+* `config/database.yml` to see the name of the database.
 * Create some seeds in `db/seeds.rb`
   ```ruby
   Snack.create!(name: 'Duane Reade Snack Mix', calories: 100)
