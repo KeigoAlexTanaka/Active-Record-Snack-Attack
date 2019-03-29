@@ -22,6 +22,7 @@
     end
   ```
 * `rails db:migrate`
+* you may need to create your database.
 * Create some seeds in `db/seeds.rb`
   ```ruby
   Snack.create!(name: 'Duane Reade Snack Mix', calories: 100)
