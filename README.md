@@ -36,7 +36,7 @@
 
   puts "created #{Snack.count} snacks!"
   ```
-* `rake db:seed` will run this file!  Now we have stuff in our database!
+* `rails db:seed` will run this file!  Now we have stuff in our database!
 * Open up a new *tab* in your terminal.  Run `rails c` (short for `rails console`)
 * Let's see what we got in there!  Try running all these commands and see what you get.  Look at the SQL that is being executed for *you*
   * `Snack.count`
@@ -68,7 +68,7 @@ Looks like a log of these snacks have some Brands in common.  Lets create a `bra
     end
   end
 ```
-* `rake db:migrate`
+* `rails db:migrate`
 
 Now let's add some Brands.  Normally we wouldn't keep editing the seeds file but since we are just playing around this is ok.
 
