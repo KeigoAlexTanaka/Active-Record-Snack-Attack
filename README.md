@@ -1,42 +1,108 @@
-# SnackAttack Rails App!
+# Snack Attack Rails App!
 
 **Commit** after each bullet point!
 
 ## Steps to follow
 
-(If you don't read closely you can't complain)
+#### Create a new Rails project
+Create a new project:
 
-* `rails new SnackAttack --database=postgresql`
-* Add *everything* and commit. (This is only the time you _should_ `add -A`)
-* `rails g model Snack`
-  * Open up the newest migration in in the `db/migrate` directory.
-  * Add a `name` and `string` column
-  ```ruby
-    def change
-      create_table :snacks do |t|
-        t.string :name
-        t.integer :calories
+```
+$ rails new SnackAttack --database=postgresql
+$ cd SnackAttack
+```
 
-        t.timestamps # add a `created_at` and `updated_at`
-      end
-    end
-  ```
-* `rails db:migrate`
-* you may need to create your database by running `rails db:create`
-* `config/database.yml` to see the name of the database.
-* Create some seeds in `db/seeds.rb`
-  ```ruby
+Set up an empty database:
+
+```
+$  rails db:create
+```
+
+Open the project in the current directory using your text editor:
+
+```
+$ subl .
+```
+
+Start the server and open up the project in the browser, localhost:3000:
+
+```
+$ rails server
+```
+
+Commit to GitHub:
+
+```
+git add .
+```
+
+#### Generate
+
+Create a Snack model with `name` and `calories` attributes as well as the optional string parameters. **Remember:** in Rails, models are singlular and capitalized. Controllers and routes are plural and lowercase.
+
+```
+$ rails g model Snack name:string calories:integer
+
+# run the migration to update the database with this change
+$ rails db:migrate
+```
+
+Before running the migration, check the `db/migrate/[timestamp]_create_snacks.rb` folder to make sure the migration is accurate:
+
+```ruby
+class CreateSnacks < ActiveRecord::Migration[5.2]
+	def change
+	  create_table :snacks do |t|
+	    t.string :name
+	    t.integer :calories
+	
+	    t.timestamps # add a `created_at` and `updated_at`
+	  end
+	end
+end
+```
+Then, check the schema file:
+
+```
+  create_table "snacks", force: :cascade do |t|
+    t.string "name"
+    t.integer "calories"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+```
+
+Navigate to the `app/models/Snack.rb` file:
+
+```
+class Snack < ApplicationRecord
+end
+```
+Then, step into the Rails console to create a new User:
+
+```
+$ rails c --sandbox
+
+# create a new user object
+>> User.new
+=> #<User id: nil, name: nil, email: nil, created_at: nil, updated_at: nil>
+```
+
+Alternatively, you can add some seed data in `db/seeds.rb`:
+
+```ruby
   Snack.create!(name: 'Duane Reade Snack Mix', calories: 100)
   Snack.create!(name: 'Duane Reade Rocky Road Ice Cream', calories: 300)
 
-  Snack.create!(name: 'Microwave Pizza', calories: 400)
+  Snack.create!(name: 'Dark Chocolate Peanut Butter Cups', calories: 400)
 
-  Snack.create!(name: 'M&Ms', calories: 300)
-  Snack.create!(name: 'Skittles', calories: 300)
-  Snack.create!(name: 'Snickers', calories: 300)
+  Snack.create!(name: 'Peanut Butter Filled Pretzels', calories: 300)
+  Snack.create!(name: 'Hold the Cone Mini Vanilla Ice Cream Cones', calories: 300)
+  Snack.create!(name: 'Mini Mochi', calories: 300)
 
   puts "created #{Snack.count} snacks!"
-  ```
+```
+
 * `rails db:seed` will run this file!  Now we have stuff in our database!
 * Open up a new *tab* in your terminal.  Run `rails c` (short for `rails console`)
 * Let's see what we got in there!  Try running all these commands and see what you get.  Look at the SQL that is being executed for *you*
@@ -46,19 +112,20 @@
   * `Snack.where(calories: 300)`
   * `Snack.where(calories: (200..500))`
   * `Snack.where.not(calories: (200..500))`
-* SOOO COOOLLL
+
 * Now let's try to update some records.
-  * Assume we mis-entered the number of calories for M&Ms
-  * `snack = Snack.find_by(name: 'M&Ms')`
+  * Assume we mis-entered the number of calories for "Mini Mochi"
+  * `snack = Snack.find_by(name: 'Mini Mochi')`
   * `snack.update!(calories: 200)`
 
-### Adding more stuff
+### Add Another Model
 
 Looks like a log of these snacks have some Brands in common.  Lets create a `brands` table!
 
 * `rails g model Brand`
 * Open up the newest migration in in the `db/migrate` directory.
 * Add a `name` and `logo` column
+
 ```ruby
   def change
     create_table :brands do |t|
