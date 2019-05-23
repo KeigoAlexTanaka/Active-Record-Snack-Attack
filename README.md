@@ -1,10 +1,8 @@
 # Snack Attack Rails App!
 
-**Commit** after each bullet point!
-
 ## Steps to follow
 
-#### Create a new Rails project
+### Create a new Rails project
 Create a new project:
 
 ```
@@ -36,7 +34,7 @@ Commit to GitHub:
 git add .
 ```
 
-#### Generate
+### Generate Model
 
 Create a Snack model with `name` and `calories` attributes as well as the optional string parameters. **Remember:** in Rails, models are singlular and capitalized. Controllers and routes are plural and lowercase.
 
@@ -63,7 +61,7 @@ end
 ```
 Then, check the schema file:
 
-```
+```ruby
   create_table "snacks", force: :cascade do |t|
     t.string "name"
     t.integer "calories"
@@ -74,7 +72,7 @@ Then, check the schema file:
 
 Navigate to the `app/models/Snack.rb` file:
 
-```
+```ruby
 class Snack < ApplicationRecord
 end
 ```
@@ -91,21 +89,29 @@ $ rails c --sandbox
 Alternatively, you can add some seed data in `db/seeds.rb`:
 
 ```ruby
-  Snack.create!(name: 'Duane Reade Snack Mix', calories: 100)
-  Snack.create!(name: 'Duane Reade Rocky Road Ice Cream', calories: 300)
+#
+# db/seeds.rb
+#
 
-  Snack.create!(name: 'Dark Chocolate Peanut Butter Cups', calories: 400)
+Snack.create(name: 'Duane Reade Snack Mix', calories: 100)
+Snack.create(name: 'Duane Reade Rocky Road Ice Cream', calories: 300)
 
-  Snack.create!(name: 'Peanut Butter Filled Pretzels', calories: 300)
-  Snack.create!(name: 'Hold the Cone Mini Vanilla Ice Cream Cones', calories: 300)
-  Snack.create!(name: 'Mini Mochi', calories: 300)
+Snack.create(name: 'Snickers', calories: 400)
+Snack.create(name: 'Milky Way', calories: 425)
 
-  puts "created #{Snack.count} snacks!"
+Snack.create(name: 'Peanut Butter Filled Pretzels', calories: 300)
+Snack.create(name: 'Hold the Cone Mini Vanilla Ice Cream Cones', calories: 300)
+Snack.create(name: 'Mini Mochi', calories: 300)
+
+puts "created #{Snack.count} snacks!"
 ```
 
-* `rails db:seed` will run this file!  Now we have stuff in our database!
-* Open up a new *tab* in your terminal.  Run `rails c` (short for `rails console`)
-* Let's see what we got in there!  Try running all these commands and see what you get.  Look at the SQL that is being executed for *you*
+In the Terminal (not inside rails console!), run `rails db:seed`. **Note:** the seed file will also run every time you run `rails db:reset` to reset your database.
+
+Open up a new *tab* in your terminal and run `rails c` (short for `rails console`)
+
+Let's see what's in the database. Try running the following commands and see what you get. Look at the SQL that is being executed for *you* in the console.
+  
   * `Snack.count`
   * `Snack.first`
   * `Snack.find_by(name: 'M&Ms')`
@@ -113,17 +119,18 @@ Alternatively, you can add some seed data in `db/seeds.rb`:
   * `Snack.where(calories: (200..500))`
   * `Snack.where.not(calories: (200..500))`
 
-* Now let's try to update some records.
+Now let's try to update some records:
+
   * Assume we mis-entered the number of calories for "Mini Mochi"
-  * `snack = Snack.find_by(name: 'Mini Mochi')`
-  * `snack.update!(calories: 200)`
+   - `snack = Snack.find_by(name: 'Mini Mochi')`
+   - `snack.update_attributes(:calories => 200)`
 
-### Add Another Model
+### Generate Another Model
 
-Looks like a log of these snacks have some Brands in common.  Lets create a `brands` table!
+Looks like a log of these snacks have some Brands in common.  Lets create a `brands` table.
 
 * `rails g model Brand`
-* Open up the newest migration in in the `db/migrate` directory.
+* Open up the newest migration in the `db/migrate` directory.
 * Add a `name` and `logo` column
 
 ```ruby
@@ -136,13 +143,18 @@ Looks like a log of these snacks have some Brands in common.  Lets create a `bra
     end
   end
 ```
-* `rails db:migrate`
 
-Now let's add some Brands.  Normally we wouldn't keep editing the seeds file but since we are just playing around this is ok.
+Before running the migration, check the `db/migrate/[timestamp]_create_brands.rb` folder to make sure the migration is accurate:
 
-First let's start with a clean slate and destroy every `Snack`.  In the console run `Snack.destroy_all`.  We are safe doing this today because we are just playing around with our seed data.  In general this is *not* a safe action.
+```
+$ rails db:migrate
+```
 
-Now let's make some brands!
+Now let's add some Brands to the `seed.rb` file.  Normally we wouldn't keep editing the seeds file but since we are just playing around this is ok.
+
+First let's start with a clean slate and destroy every `Snack`.  In the console (or add to the beginning of your seed file), run `Snack.destroy_all`.  We are safe doing this today because we are just playing around with our seed data.  In general this is *not* a safe action.
+
+Now, create some brands.
 
 ## Relations
 
@@ -161,9 +173,10 @@ Now in the last migration:
 
 ### `has_many` and `belongs_to`
 
-Now to actually link these models together we just need two easy things.
+Now to actually link these models together we need two things:
 
 `app/models/brand`
+
 ```ruby
   class Brand < ApplicationRecord
     has_many :snacks
@@ -171,19 +184,24 @@ Now to actually link these models together we just need two easy things.
 ```
 
 `app/models/snack`
+
 ```ruby
   class Snack < ApplicationRecord
     belongs_to :brand
   end
 ```
 
-Now let's update our seeds file so the relations exist.  We will add a `brand_id` to each snack. Create six brands. 
+Update the seed file so the relations exist.  We will add a `brand_id` to each snack. For example:
 
-Again since we are are just playing around, we can drop all the snacks so we can run `Snack.destroy_all` and then `Brand.destroy_all` in the console.
+```
+snickers = Snack.create(name: 'Snickers', calories: 300, brand_id: mars.id)
+```
 
-Now let's run our migration seeds again: `rails db:seed`
+Again since we are just playing around, we can drop all the snacks so we can run `Snack.destroy_all` and then `Brand.destroy_all` in the console.
 
-And let's hop back in the console:
+Run the seed file again: `rails db:seed`
+
+Then, hop back in the console:
 
 ```ruby
 reload! # reload all the new code
@@ -206,25 +224,4 @@ brand.snacks # => look at all these snacks! so coooll!!
   * `save!` raises and error if it cannot save
 
 * The `create` method makes a new instance *and* tries to save it.
-The source code looks _something_ looks something like
-```ruby
-class ActiveRecord::Base
-  def self.create(cols_and_vals)
-    record = new(cols_and_vals)
-    record.save
-    record
-  end
-end
-```
-
-* `create!` does what you would expect. Raises an error if it cannot save
-```ruby
-class ActiveRecord::Base
-  def self.create(cols_and_vals)
-    record = new(cols_and_vals)
-    record.save!
-    record
-  end
-end
-```
-> In reality this method is more complicated but this is how you can picture it
+* `create!` raises an error if it cannot save.
